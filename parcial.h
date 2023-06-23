@@ -6,19 +6,19 @@
 #define PARCIAL310818_PARCIAL_H
 
 typedef struct node{
-    char caracter;
-    int frecuencia;
+    int data;
     struct node * next;
 }Node;
 
-typedef struct pila{
-    Node * top;
-}Pila;
+typedef struct lista{
+    Node * header;
+}Lista;
 
-Node * newNode(char caract, int frecuencia);
-Pila * newPila();
-void empilar(Pila * pila, Node * nodo);
-void imprimir(Pila * pila);
+Node * newNode(int data);
+Lista * newLista();
+void enlistar(Lista * lista, Node * nodo);
+void imprimir(Lista * lista);
+Lista * resta(Lista * lista1, Lista * lista2);
 
 
 #endif //PARCIAL310818_PARCIAL_H

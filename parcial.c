@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-Node *newNode(char caract, int frecuencia) {
+Node *newNode(int data) {
     Node * aux = NULL;
     aux = malloc(sizeof(Node));
     if(aux == NULL){
@@ -14,47 +14,60 @@ Node *newNode(char caract, int frecuencia) {
         exit(-1);
     }
     aux->next = NULL;
-    aux->frecuencia = 1;
-    aux->caracter = caract;
+    aux->data = data;
     return aux;
 }
 
-Pila *newPila() {
-    Pila * aux = NULL;
-    aux = malloc(sizeof (Pila));
-    if(aux == NULL){
-        printf("Error\n");
+
+void imprimir(Lista * lista) {
+    Node * aux = lista->header;
+    while (aux != NULL){
+        printf("%d\n", aux->data);
+        aux = aux->next;
+    }
+}
+
+Lista *newLista() {
+    Lista* aux = NULL;
+    aux = malloc(sizeof (Lista));
+    if( aux == NULL){
+        printf("Error en la asignacion de memoria\n");
         exit (-1);
     }
-    aux->top = NULL;
+    aux->header = NULL;
     return aux;
 }
 
-void empilar(Pila *pila, Node *nodo) {
-    Node * aux = pila->top;
-    while (aux != NULL && aux->caracter != nodo->caracter){
-        aux = aux->next;
-    }
-    if(aux != NULL){
-        if(aux->caracter == nodo->caracter){
-            nodo->frecuencia ++;
-        }
-    }
-
-    if(pila->top == NULL){
-        pila->top = nodo;
+void enlistar(Lista *lista, Node *nodo) {
+    if(lista->header == NULL){
+        lista->header = nodo;
     }else{
-        nodo->next = pila->top;
-        pila->top = nodo;
+        Node * aux = lista->header;
+        while(aux->next != NULL){
+            aux = aux->next;
+        }
+        aux->next = nodo;
     }
-
-
 }
 
-void imprimir(Pila *pila) {
-    Node * aux = pila->top;
-    while (aux != NULL){
-        printf("%c: %d\n", aux->caracter, aux->frecuencia);
-        aux = aux->next;
+Lista * resta(Lista *lista1, Lista * lista2) {
+    Lista * result = newLista();
+    Node * aux1 = lista1->header;
+
+    while (aux1 != NULL){
+        Node * aux2 = lista2->header;
+        int cont = 0;
+        while (aux2 != NULL && cont==0){
+            if(aux1->data == aux2->data){
+                cont++;
+            }
+            aux2 = aux2->next;
+        }
+        if(cont == 0 && aux2 != NULL){
+            int valor = aux1->data;
+            enlistar(result, newNode(valor));
+        }
+        aux1 = aux1->next;
     }
+    return result;
 }
